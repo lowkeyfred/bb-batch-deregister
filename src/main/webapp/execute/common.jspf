@@ -1,0 +1,18 @@
+<%--<%@page import="java.util.*,cn.com.blackboard.batchmanager.dto.*"%>--%>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<%@ include file="doctype.jspf" %>
+
+<%@ taglib uri="/bbNG" prefix="bbNG" %>
+<%@ taglib uri="/bbData" prefix="bbData" %>
+<%@ taglib uri="/bbUI" prefix="bbUI" %>
+<%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<base href="<%=basePath%>"></base>
+<script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
