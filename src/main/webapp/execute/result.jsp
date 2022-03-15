@@ -50,6 +50,13 @@
             }
         %>
     </div>
-    <bbNG:okButton></bbNG:okButton>
+    <bbNG:button type="PageLevel" label="OK" onClick="go_parent()" />
 
+    <bbNG:jsBlock>
+        <script type="text/javascript">
+        function go_parent() {
+            document.location = "/webapps/portal/execute/tabs/tabAction?tabType=admin";
+            }
+        </script>
+    </bbNG:jsBlock>
 </bbNG:genericPage>
