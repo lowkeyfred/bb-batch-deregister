@@ -1,4 +1,4 @@
-package edu.scupi;
+package edu.scupi.HANDLER;
 
 import blackboard.data.course.Course;
 import blackboard.data.course.CourseMembership;

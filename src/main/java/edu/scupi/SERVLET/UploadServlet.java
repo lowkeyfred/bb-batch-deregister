@@ -1,6 +1,9 @@
-package edu.scupi;
+package edu.scupi.SERVLET;
 
 import blackboard.data.course.Course;
+import edu.scupi.HANDLER.BBHandler;
+import edu.scupi.HANDLER.BOMHandler;
+import edu.scupi.HANDLER.FileHandler;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -30,6 +33,7 @@ public class UploadServlet extends HttpServlet {
         File file = null;
         TreeMap<String, List<String>> cuList;
         TreeMap<String, List<String>> cnuList = new TreeMap<>();
+        String errMsg = null;
         try {
             List<FileItem> list = upload.parseRequest(request);
             if (list.size() > 0) {
@@ -51,9 +55,18 @@ public class UploadServlet extends HttpServlet {
                 }
                 ins.close();
                 fos.close();
-                BOMHandler.removeBom(Paths.get(file.getAbsolutePath()));
             }
         } catch (FileUploadException fileUploadException) {
+            errMsg = "Error occurred when uploading the file, please try again.";
+        }
+
+        if (!file.getName().endsWith(".csv")) {
+            errMsg = "Only csv file (exported from the software) supported, please try again.";
+        }
+
+        if (null != errMsg) {
+            request.setAttribute("err", errMsg);
+            request.getRequestDispatcher("/execute/index.jsp").forward(request, response);
         }
 
         cuList = FileHandler.getMap(file);

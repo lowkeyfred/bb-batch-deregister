@@ -11,6 +11,12 @@
         <bbNG:pageTitleBar>B2 Batch Deregister</bbNG:pageTitleBar>
     </bbNG:pageHeader>
 
+    <% if (null != request.getAttribute("err")) {
+        String errMsg = (String) request.getAttribute("err");
+        %>
+        <p style="color:red"> <%=errMsg%> </p>
+    <% } %>
+
     <bbNG:form action="./upload" method="post" enctype="multipart/form-data">
         <bbNG:dataCollection>
             <bbNG:step title="Warning:" id="ackWarning">
@@ -24,7 +30,10 @@
                     <bbNG:filePicker baseElementName="cuFile" var="excelFile" mode="LOCAL_FILE_ONLY" required="true"/>
                 </bbNG:dataElement>
             </bbNG:step>
-            <bbNG:stepSubmit title="Submit"/>
+            <bbNG:stepSubmit title="Submit">
+                <bbNG:stepSubmitButton label="Submit" onClick="fileValidation(event)" primary="true"></bbNG:stepSubmitButton>
+                <bbNG:stepSubmitButton label="Cancel" onClick="go_parent()"></bbNG:stepSubmitButton>
+            </bbNG:stepSubmit>
         </bbNG:dataCollection>
     </bbNG:form>
 
@@ -46,6 +55,27 @@
                     }
                 })
             })
+
+            function fileValidation(event) {
+                let fileInput =
+                    jQuery("#cuFile_chooseLocalFile");
+
+                let filePath = fileInput.val();
+
+                // Allowing file type
+                let allowedExtensions =
+                    /(\.csv)$/i;
+
+                if (!allowedExtensions.exec(filePath)) {
+                    alert('auto exported csv file only.');
+                    event.preventDefault();
+                    return false;
+                }
+            }
+
+            function go_parent() {
+                document.location = "/webapps/portal/execute/tabs/tabAction?tabType=admin";
+            }
 
         </script>
     </bbNG:jsBlock>

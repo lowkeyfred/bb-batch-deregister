@@ -6,14 +6,22 @@
 
     <display-name>b2.name</display-name>
     <servlet>
+        <servlet-name>index</servlet-name>
+        <servlet-class>edu.scupi.SERVLET.IndexServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>upload</servlet-name>
-        <servlet-class>edu.scupi.UploadServlet</servlet-class>
+        <servlet-class>edu.scupi.SERVLET.UploadServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>confirm</servlet-name>
-        <servlet-class>edu.scupi.ConfirmServlet</servlet-class>
+        <servlet-class>edu.scupi.SERVLET.ConfirmServlet</servlet-class>
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>index</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>upload</servlet-name>
         <url-pattern>/upload</url-pattern>

@@ -1,9 +1,11 @@
-package edu.scupi;
+package edu.scupi.SERVLET;
 
 import blackboard.data.course.Course;
 import blackboard.data.course.CourseMembership;
 import blackboard.data.user.User;
 import blackboard.persist.Id;
+import blackboard.servlet.tags.ajax.facade.nautilus.NautilusEwsRuleDisplayHelper;
+import edu.scupi.HANDLER.BBHandler;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -21,13 +23,20 @@ public class ConfirmServlet extends HttpServlet {
                           HttpServletResponse response) throws ServletException, IOException {
         ServletContext app = request.getSession().getServletContext();
         Object content = app.getAttribute("COURSEUSERLIST");
-        TreeMap<String, String> result = new TreeMap<String, String>();
-        TreeMap<String, List<String>> delList = new TreeMap<>();
+        TreeMap<String, String> result = new TreeMap<>();
+        TreeMap<String, List<String>> delList = null;
+        ArrayList<String> necourses = new ArrayList<>();
+        String NECOURSE = "Not exist course, ignored";
+        necourses.add(NECOURSE);
+        String NOTFOUND = "Not found in course, ignored";
+        String NOTDEL = "Not deleted, try delete manually";
         if (content instanceof TreeMap<?, ?>) {
             TreeMap<String, List<String>> cuList = (TreeMap<String, List<String>>) content;
+            delList = new TreeMap<>();
             for (String key : cuList.keySet()) {
                 Course course = BBHandler.loadCourseByCourseId(key);
                 if (null == course) {
+                    delList.put(key, necourses);
                     continue;
                 }
                 String fullName = key + ": " + course.getTitle();
@@ -39,12 +48,14 @@ public class ConfirmServlet extends HttpServlet {
                         Id userId = cu.getId();
                         CourseMembership cmu = BBHandler.loadCourseMemberShipByCourseIdAndUserId(courseId, userId);
                         if (null == cmu) {
+                            delList.get(fullName).add(user + " " + NOTFOUND);
                             continue;
                         }
                         try {
                             BBHandler.deleteCourseUser(cmu);
                             delList.get(fullName).add(user);
                         } catch (Exception e) {
+                            delList.get(fullName).add(user + " " + NOTDEL);
                             result.put("RESULT", "ERROR PERSISTING");
                         }
                     }
@@ -56,7 +67,7 @@ public class ConfirmServlet extends HttpServlet {
             result.put("RESULT", "ERROR COURSEUSERLIST");
         }
         request.setAttribute("result", result);
-        request.setAttribute("dellist", delList);
+        request.setAttribute("delList", delList);
         request.getRequestDispatcher("/execute/result.jsp").forward(request, response);
     }
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="bbng" uri="/bbNG" %>
 <%@ page import="java.util.TreeMap" %>
 <%@ page import="java.util.List" %>
 <%@include file="common.jspf" %>
@@ -11,6 +12,7 @@
     } else {
         res = "Error";
     }
+    TreeMap<String, List<String>> delList = (TreeMap<String, List<String>>) request.getAttribute("delList");
 %>
 
 <bbNG:genericPage>
@@ -22,7 +24,32 @@
         <bbNG:pageTitleBar>B2 Batch Deregister</bbNG:pageTitleBar>
     </bbNG:pageHeader>
 
-    <%=res%>
-    <%=request.getAttribute("dellist")%>
+<%--    <%=res%>--%>
+    <div class="clearfix">
+        <% if (null != delList) { %>
+
+        <ul>
+            <%
+                for (String course : delList.keySet()) { %>
+            <li>
+                <i>The following users had been removed from the course: </i><b><%=course%>
+            </b>
+                <ul><br>
+                    <% for (String user : delList.get(course)) { %>
+                    <li><%=user%>
+                    </li>
+                    <%}%>
+                </ul>
+            </li>
+            <br>
+            <%}%>
+        </ul>
+        <%
+            } else {
+                out.println("Error parsing data.");
+            }
+        %>
+    </div>
+    <bbNG:okButton></bbNG:okButton>
 
 </bbNG:genericPage>

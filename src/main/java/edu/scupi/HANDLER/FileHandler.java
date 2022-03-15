@@ -1,10 +1,11 @@
-package edu.scupi;
+package edu.scupi.HANDLER;
 
 import com.opencsv.CSVReader;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +15,7 @@ public class FileHandler {
     public static TreeMap<String, List<String>> getMap(File file) {
         TreeMap<String, List<String>> cuList = new TreeMap<>();
         try {
+            BOMHandler.removeBom(Paths.get(file.getAbsolutePath()));
             CSVReader reader = new CSVReader(new FileReader(file));
             for (String[] nextLine : reader) {
                 if (2 == nextLine.length) {
